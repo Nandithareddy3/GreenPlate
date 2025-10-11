@@ -1,0 +1,72 @@
+.detailContainer {
+    max-width: 600px;
+    margin: 2rem auto;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    font-family: 'Poppins', sans-serif;
+}
+
+.listingImage {
+    width: 100%;
+    height: auto;
+}
+
+.infoSection {
+    padding: 1.5rem;
+    color: #4A4A4A;
+}
+
+.title {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem 0;
+}
+
+.sellerInfo {
+    font-size: 0.9rem;
+    color: #888;
+    margin-bottom: 1rem;
+}
+
+.description {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.pickupInfo {
+    background-color: #f7f7f7;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.claimButton {
+    width: 100%;
+    padding: 15px;
+    background-color: #A8D8B9;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.claimButton:hover {
+    background-color: #97c4a8;
+}
+
+.centered {
+    text-align: center;
+    margin-top: 4rem;
+    font-family: 'Poppins', sans-serif;
+    color: #4A4A4A;
+}
+
+.error {
+    color: #d9534f;
+}
