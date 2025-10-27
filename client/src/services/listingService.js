@@ -23,9 +23,15 @@ const getListings = async (keyword = '') => {
     const response = await axios.get(`${API_URL}?keyword=${keyword}`);
     return response.data;
 };
+const deleteListing = async (listingId, token) => {
+    const config = { headers: { Authorization: `Bearer ${token}` } };
+    const response = await axios.delete(API_URL + listingId, config);
+    return response.data;
+};
 const listingService = {
     getListings,
     createListing,
     getListingById,
+    deleteListing,
 };
 export default listingService;

@@ -10,6 +10,7 @@ import ListingDetailPage from './pages/ListingDetailPage';
 import ClaimsPage from './pages/ClaimsPage';
 import ProfilePage from './pages/ProfilePage';
 import ExplorePage from './pages/ExplorePage';
+import CreateStoryPage from './pages/CreateStoryPage';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
             <Route path="/post" element={<PostPage />} />
             <Route path="/claims" element={<ClaimsPage />} />
             <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/create-story" element={<CreateStoryPage />} />
           </Route>
         </Routes>
       </main>

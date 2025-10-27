@@ -28,6 +28,9 @@
     font-size: 0.9rem;
     color: #888;
     margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .description {
@@ -69,4 +72,53 @@
 
 .error {
     color: #d9534f;
+}
+
+.followButton,
+.unfollowButton {
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.followButton {
+    background-color: #A8D8B9;
+    color: white;
+}
+
+.unfollowButton {
+    background-color: #f0f0f0;
+    color: #4A4A4A;
+}
+
+/* Add these new styles to ListingDetailPage.module.css */
+.ownerActions {
+    margin-top: 1rem;
+    display: flex;
+    gap: 1rem;
+}
+
+.editButton,
+.deleteButton {
+    flex: 1;
+    padding: 15px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.editButton {
+    background-color: #f0f0f0;
+    color: #4A4A4A;
+    border: 1px solid #ddd;
+}
+
+.deleteButton {
+    background-color: #dc3545;
+    color: white;
 }
