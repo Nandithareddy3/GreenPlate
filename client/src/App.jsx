@@ -7,9 +7,9 @@ import RegisterPage from './pages/RegisterPage';
 import LoginPage from './pages/LoginPage';
 import PostPage from './pages/PostPage';
 import ListingDetailPage from './pages/ListingDetailPage';
-const ExplorePage = () => <h1>Explore & Search</h1>;
-const ClaimsPage = () => <h1>My Claims</h1>;
-const ProfilePage = () => <h1>My Profile</h1>;
+import ClaimsPage from './pages/ClaimsPage';
+import ProfilePage from './pages/ProfilePage';
+import ExplorePage from './pages/ExplorePage';
 
 function App() {
   return (

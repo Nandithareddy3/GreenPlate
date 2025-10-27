@@ -1,6 +1,8 @@
-const User = require('../models/userModel');
-const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
+const User = require('../models/userModel');
+const Listing = require('../models/listingModel');
+const Claim = require('../models/claimModel');
 
 // Helper Function
 const generateToken = (id) => {
@@ -49,12 +51,7 @@ const registerUser = async (req, res) => {
 // Login User
 const loginUser = async (req, res) => {
     const { email, password } = req.body;
-
-    // Find user by email
     const user = await User.findOne({ email });
-
-    // *** THIS IS THE CRITICAL FIX ***
-    // Check if user exists AND if the password matches the hashed password in the database
     if (user && (await bcrypt.compare(password, user.password))) {
         res.status(200).json({
             _id: user.id,
@@ -67,8 +64,35 @@ const loginUser = async (req, res) => {
         res.status(400).json({ message: 'Invalid credentials' });
     }
 };
+const getUserProfile = async (req, res) => {
+    const user = await User.findById(req.user.id);
+
+    if (user) {
+        let userActivity = {};
+        if (user.role === 'Seller') {
+            // For sellers, find their listings
+            const listings = await Listing.find({ seller: user._id }).sort({ createdAt: -1 });
+            userActivity = { listings };
+        } else {
+            // For takers, find their claims
+            const claims = await Claim.find({ taker: user._id }).populate('listing').sort({ createdAt: -1 });
+            userActivity = { claims };
+        }
+
+        res.json({
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+            role: user.role,
+            ...userActivity, // 2. Spread the relevant activity (listings or claims)
+        });
+    } else {
+        res.status(404).json({ message: 'User not found' });
+    }
+};
 
 module.exports = {
     registerUser,
     loginUser,
+    getUserProfile,
 };

@@ -1,0 +1,85 @@
+.pageContainer {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.centered {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.profileHeader {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.avatar {
+    width: 100px;
+    height: 100px;
+    background-color: #e0e0e0;
+    border-radius: 50%;
+    margin: 0 auto 1rem;
+}
+
+.name {
+    margin: 0;
+}
+
+.email {
+    color: #888;
+}
+
+.impactCard {
+    background: linear-gradient(135deg, #A8D8B9, #87c6a0);
+    color: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.impactCard h2 {
+    margin-top: 0;
+}
+
+.listingsSection h2 {
+    margin-bottom: 1rem;
+}
+
+.activitySection h2 {
+    margin-bottom: 1rem;
+}
+
+.claimItem {
+    background-color: #fff;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.status {
+    font-weight: bold;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+.pending {
+    background-color: #f7c5a8;
+    color: #a15c2a;
+}
+
+.confirmed {
+    background-color: #A8D8B9;
+    color: #3b7454;
+}
+
+.cancelled {
+    background-color: #f8d7da;
+    color: #721c24;
+}

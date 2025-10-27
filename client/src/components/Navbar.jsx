@@ -6,6 +6,7 @@ import styles from './Navbar.module.css';
 const Navbar = () => {
     const { user, logout } = useAuth();
     const navigate = useNavigate();
+
     const handleLogout = () => {
         logout();
         navigate('/login');
@@ -24,10 +25,11 @@ const Navbar = () => {
                     Post
                 </NavLink>
             )}
-
-
             {user ? (
                 <>
+                    <NavLink to="/profile" className={({ isActive }) => isActive ? `${styles.navItem} ${styles.active}` : styles.navItem}>
+                        Profile
+                    </NavLink>
                     <NavLink to="/claims" className={({ isActive }) => isActive ? `${styles.navItem} ${styles.active}` : styles.navItem}>
                         Claims
                     </NavLink>
@@ -36,7 +38,6 @@ const Navbar = () => {
                     </button>
                 </>
             ) : (
-
                 <>
                     <NavLink to="/login" className={({ isActive }) => isActive ? `${styles.navItem} ${styles.active}` : styles.navItem}>
                         Login
