@@ -1,20 +1,44 @@
-@import "tailwindcss";
+/* 1. FONT IMPORT (Poppins & Roboto) */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&family=Roboto:wght@400;500&display=swap');
 
-/* 1. Import our chosen font from Google Fonts */
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap");
+/* 2. CSS CUSTOM PROPERTIES (Your Color Palette) */
+:root {
+  /* Brand Colors */
+  --primary-green: #4CAF50;
+  --primary-green-darker: #45a049;
+  --secondary-beige: #F5E8C7;
+  
+  /* Neutrals */
+  --bg-white: #FFFFFF;
+  --bg-light-grey: #F4F4F4;
+  --text-dark: #222222;
+  --text-light: #555555;
+  
+  /* Functional */
+  --status-pending: #FFA500;
+  --status-cancelled: #F44336;
 
-/* 2. Apply a modern CSS reset */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+  /* Layout */
+  --border-radius: 8px;
 }
 
-/* 3. Set our default styles for the entire app */
+/* 3. GLOBAL STYLES */
 body {
-  font-family: "Poppins", sans-serif;
-  background-color: #f9f9f9;
-  /* A very light grey for a soft background */
-  color: #4a4a4a;
-  /* Our charcoal text color */
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  color: var(--text-dark);
+  background-color: var(--bg-white);
+  overscroll-behavior: none;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Poppins', sans-serif;
+  color: var(--text-dark);
+}
+
+/* A helper class for padding below the fixed navbar */
+.main-content-padding {
+  padding-bottom: 76px; /* 60px navbar + 16px space */
 }

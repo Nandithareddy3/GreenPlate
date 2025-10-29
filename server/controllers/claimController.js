@@ -6,10 +6,19 @@ const Notification = require('../models/notificationModel');
 // @route   POST /api/claims/:listingId
 
 const createClaim = async (req, res) => {
+  try {
     const listing = await Listing.findById(req.params.listingId).populate('seller');
 
     if (!listing) {
         return res.status(404).json({ message: 'Listing not found' });
+    }
+    if (!listing.seller) {
+      console.error(`Orphaned Listing Found: Listing ${listing._id} has no valid seller.`);
+      return res.status(404).json({ message: 'The seller for this listing could not be found.' });
+    }
+    const existingClaim = await Claim.findOne({ listing: listing._id, taker: req.user.id });
+    if (existingClaim) {
+        return res.status(400).json({ message: 'You have already sent an inquiry for this item.' });
     }
     const claim = await Claim.create({
         listing: listing._id,
@@ -20,10 +29,14 @@ const createClaim = async (req, res) => {
     await Notification.create({
         user: listing.seller._id,
         message: message,
-        link: `/claims`
+        link: `/profile`
     });
 
     res.status(201).json(claim);
+} catch (error) {
+    console.error('Error creating claim:', error);
+    res.status(500).json({ message: 'Server Error' });
+  }
 };
 // @route   GET /api/claims/myclaims
 const getMyClaims = async (req, res) => {

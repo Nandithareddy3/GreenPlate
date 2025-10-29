@@ -1,0 +1,78 @@
+.cardLink {
+  text-decoration: none;
+  color: inherit;
+}
+
+.card {
+  display: flex;
+  align-items: center;
+  gap: 1rem; /* 16px */
+  background-color: var(--bg-white);
+  border: 1px solid #E5E7EB; /* border-gray-200 */
+  border-radius: var(--border-radius);
+  padding: 1rem;
+  margin-bottom: 0.75rem; /* 12px */
+  position: relative;
+  overflow: hidden;
+  transition: box-shadow 0.2s;
+}
+
+.card:hover {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.cardImage {
+  width: 64px; /* 4rem */
+  height: 64px;
+  border-radius: var(--border-radius);
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.cardContent {
+  flex-grow: 1;
+  /* Prevent text from overflowing */
+  min-width: 0;
+}
+
+.sellerName {
+  font-size: 0.875rem;
+  color: var(--text-light);
+  display: block;
+}
+
+.cardTitle {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.statusBadge {
+  font-size: 0.75rem; /* 12px */
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 1rem; /* Pill shape */
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Status Colors */
+.statusPending {
+  background-color: #FEF3C7; /* yellow-100 */
+  color: #9A3412; /* yellow-800 */
+}
+.statusConfirmed {
+  background-color: #D1FAE5; /* green-100 */
+  color: #065F46; /* green-800 */
+}
+.statusCancelled, .statusCompleted {
+  background-color: #F3F4F6; /* gray-100 */
+  color: #4B5563; /* gray-600 */
+}

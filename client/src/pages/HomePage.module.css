@@ -1,0 +1,83 @@
+.homeContainer {
+  /* Remove padding-top, the header and reel provide it */
+  padding: 0 1rem 1rem 1rem; 
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 1rem; /* Add padding here instead */
+}
+
+.logo {
+  color: var(--primary-green);
+  font-size: 2.25rem; /* 36px */
+  margin: 0;
+}
+
+/* New styles for the feed */
+.feedContainer {
+  margin-top: 1.5rem; /* 24px */
+}
+
+.title {
+  font-size: 1.5rem; /* 24px */
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  color: var(--text-light);
+}
+
+.logoutButton {
+  width: 100%; 
+  padding: 0.75rem; 
+  background-color: #EF4444; /* bg-red-500 */
+  color: white; 
+  border: none; 
+  border-radius: var(--border-radius); 
+  margin-top: 2rem;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  transition: background-color 0.2s;
+}
+
+.logoutButton:hover {
+  background-color: #DC2626; /* bg-red-600 */
+}
+/* ... (keep all the old styles like .homeContainer, .header, etc.) ... */
+
+.feedContainer {
+  margin-top: 1.5rem; /* 24px */
+}
+
+.title {
+  font-size: 1.5rem; /* 24px */
+  margin-bottom: 1rem; /* Add more space before the grid */
+}
+
+/* New styles for the grid */
+.listingGrid {
+  display: grid;
+  /* This creates a 1-column grid on mobile */
+  grid-template-columns: 1fr;
+  gap: 1.25rem; /* 20px */
+}
+
+/* This makes the card links look clean */
+.cardLink {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* --- Responsive Design (OLX style) --- */
+/* On larger screens (like tablets), show a 2-column grid */
+@media (min-width: 640px) {
+  .listingGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ... (keep the .logoutButton style) ... */

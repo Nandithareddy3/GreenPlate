@@ -1,75 +1,38 @@
-import React from "react";
-import { NavLink, useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
-
-import {
-  HiOutlineHome,
-  HiOutlineMap,
-  HiOutlinePlusCircle,
-  HiOutlineBell,
-  HiOutlineUserCircle,
-  HiOutlineLogout,
-  HiOutlineLogin,
-} from "react-icons/hi";
+import React from 'react';
+import { NavLink } from 'react-router-dom';
+// 1. We've replaced BiPlusSquare with BiPlus
+import { BiHomeAlt2, BiSearch, BiPlus, BiBell, BiUser } from 'react-icons/bi';
+import styles from './Navbar.module.css';
 
 const Navbar = () => {
-  const { user, logout } = useAuth();
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    logout();
-    navigate("/login");
+  
+  const getNavLinkClass = ({ isActive }) => {
+    return isActive ? `${styles.navLink} ${styles.active}` : styles.navLink;
   };
 
-  const navLinkClass = ({ isActive }) =>
-    `flex flex-col items-center transition-colors ${
-      isActive ? "text-green-500" : "text-gray-500 hover:text-green-500"
-    }`;
-
   return (
-    <nav className="fixed bottom-0 left-0 w-full h-16 bg-white flex justify-around items-center border-t border-gray-200 z-50">
-      <NavLink to="/" className={navLinkClass}>
-        <HiOutlineHome size={28} />
-        <span className="text-xs">Home</span>
+    <nav className={styles.bottomNavbar}>
+      <NavLink to="/" className={getNavLinkClass}>
+        <BiHomeAlt2 size={24} />
       </NavLink>
 
-      <NavLink to="/explore" className={navLinkClass}>
-        <HiOutlineMap size={28} />
-        <span className="text-xs">Explore</span>
+      <NavLink to="/explore" className={getNavLinkClass}>
+        <BiSearch size={24} />
       </NavLink>
 
-      {user && user.role === "Seller" && (
-        <NavLink to="/post" className="text-green-500 hover:text-green-600">
-          <HiOutlinePlusCircle size={36} />
-        </NavLink>
-      )}
+      <NavLink to="/post" className={getNavLinkClass}>
+        {/* 2. We're using the new icon here */}
+        <BiPlus size={28} /> {/* Made it slightly larger */}
+      </NavLink>
 
-      {user ? (
-        <>
-          <NavLink to="/notifications" className={navLinkClass}>
-            <HiOutlineBell size={28} />
-            <span className="text-xs">Alerts</span>
-          </NavLink>
-          <NavLink to="/profile" className={navLinkClass}>
-            <HiOutlineUserCircle size={28} />
-            <span className="text-xs">Profile</span>
-          </NavLink>
-          <button
-            onClick={handleLogout}
-            className="flex flex-col items-center text-gray-500 hover:text-red-500 transition-colors"
-          >
-            <HiOutlineLogout size={28} />
-            <span className="text-xs">Logout</span>
-          </button>
-        </>
-      ) : (
-        <NavLink to="/login" className={navLinkClass}>
-          <HiOutlineLogin size={28} />
-          <span className="text-xs">Login</span>
-        </NavLink>
-      )}
+      <NavLink to="/notifications" className={getNavLinkClass}>
+        <BiBell size={24} />
+      </NavLink>
+
+      <NavLink to="/profile" className={getNavLinkClass}>
+        <BiUser size={24} />
+      </NavLink>
     </nav>
   );
 };
-
 export default Navbar;

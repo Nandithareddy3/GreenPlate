@@ -1,134 +1,145 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
-import listingService from '../services/listingService';
-import claimService from '../services/claimService';
-import authService from '../services/authService';
-import { useAuth } from '../context/AuthContext';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext.jsx';
+import axios from 'axios';
+import Button from '../components/Button.jsx';
+import { BiMap, BiTime, BiCategoryAlt } from 'react-icons/bi';
 import styles from './ListingDetailPage.module.css';
 
+// Helper to format the date
+const formatDateTime = (dateString) => {
+  const date = new Date(dateString);
+  return date.toLocaleDateString('en-US', {
+    weekday: 'short',
+    month: 'short',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true,
+  });
+};
+
 const ListingDetailPage = () => {
-    const { listingId } = useParams();
-    const { user } = useAuth();
-    const navigate = useNavigate();
+  const { id } = useParams(); // Get the listing ID from the URL
+  const { user, token } = useAuth(); // Get current user
+  const navigate = useNavigate();
 
-    const [listing, setListing] = useState(null);
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [isFollowing, setIsFollowing] = useState(false);
+  const [listing, setListing] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [isClaiming, setIsClaiming] = useState(false); // For button loading
 
-    useEffect(() => {
-        const fetchListing = async () => {
-            try {
-                setIsLoading(true);
-                const data = await listingService.getListingById(listingId);
-                setListing(data);
-
-                if (user && data) {
-                    setIsFollowing(user.following.includes(data.seller._id));
-                }
-            } catch (err) {
-                setError('Could not fetch listing details. It may have been removed.');
-                console.error(err);
-            } finally {
-                setIsLoading(false);
-            }
-        };
-        fetchListing();
-    }, [listingId, user]);
-
-    // ✅ RENAMED and UPDATED: This function now sends an "Inquiry".
-    const handleInquiry = async () => {
-        if (!user) {
-            alert('Please log in to express interest.');
-            navigate('/login');
-            return;
-        }
-        try {
-            await claimService.createClaim(listingId, user.token);
-            // Updated success message.
-            alert('Inquiry sent! The seller has been notified.');
-            // We no longer change the local state, as the post remains public.
-        } catch (error) {
-            alert(`Error: ${error.response?.data?.message || 'Could not send inquiry.'}`);
-        }
+  useEffect(() => {
+    const fetchListing = async () => {
+      try {
+        const { data } = await axios.get(`http://localhost:5000/api/listings/${id}`);
+        setListing(data);
+      } catch (err) {
+        setError('Failed to load listing.');
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
     };
+    fetchListing();
+  }, [id]);
 
-    const handleFollow = async () => {
-        if (!user) {
-            alert('Please log in to follow sellers.');
-            return;
-        }
-        try {
-            await authService.followUser(listing.seller._id, user.token);
-            setIsFollowing(!isFollowing);
-        } catch (error) {
-            alert('Something went wrong. Please try again.');
-        }
-    };
+  const handleClaimClick = async () => {
+    if (!token) {
+      navigate('/login'); // Redirect to login if not signed in
+      return;
+    }
+    
+    setIsClaiming(true);
+    try {
+      // Call the "create claim" API we built
+      await axios.post(`http://localhost:5000/api/claims/${id}`, {}, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      
+      // On success, show an alert and send user to their "claims" page
+      alert('Your inquiry has been sent to the seller!');
+      navigate('/profile'); // We'll build this page to show "My Claims"
+      
+    } catch (err) {
+      alert('Failed to send inquiry. You may have already claimed this item.');
+      console.error(err);
+    } finally {
+      setIsClaiming(false);
+    }
+  };
 
-    const handleDelete = async () => {
-        if (window.confirm('Are you sure you want to permanently delete this post?')) {
-            try {
-                await listingService.deleteListing(listingId, user.token);
-                alert('Post deleted successfully.');
-                navigate('/');
-            } catch (error) {
-                alert('Failed to delete the post.');
-            }
-        }
-    };
+  if (loading) return <div className={styles.pageContainer}><p>Loading...</p></div>;
+  if (error) return <div className={styles.pageContainer}><p>{error}</p></div>;
+  if (!listing) return null;
 
-    // --- Render Logic ---
-    if (isLoading) { return <div className={styles.centered}>Loading...</div>; }
-    if (error) { return <div className={`${styles.centered} ${styles.error}`}>{error}</div>; }
-    if (!listing) { return <div className={styles.centered}>Post not found.</div>; }
+  // Check if the current user is the seller
+  const isSeller = user && user._id === listing.seller._id;
+  // Check if the user is a "Taker"
+  const canClaim = user && user.role === 'Taker';
 
-    const isOwner = user?._id === listing.seller._id;
-
-    return (
-        <div className={styles.detailContainer}>
-            <img
-                src={listing.imageUrl || "https://placehold.co/600x400/A8D8B9/4A4A4A?text=GreenPlate"}
-                alt={listing.title}
-                className={styles.listingImage}
-            />
-            <div className={styles.infoSection}>
-                <h1 className={styles.title}>{listing.title}</h1>
-
-                <div className={styles.sellerInfo}>
-                    <p>Posted by: <strong>{listing.seller.name}</strong></p>
-                    {user && !isOwner && (
-                        <button onClick={handleFollow} className={isFollowing ? styles.unfollowButton : styles.followButton}>
-                            {isFollowing ? 'Unfollow' : 'Follow'}
-                        </button>
-                    )}
-                </div>
-
-                <p className={styles.description}>{listing.description}</p>
-
-                <div className={styles.pickupInfo}>
-                    <h3>Pickup Details</h3>
-                    <p><strong>Expires on:</strong> {new Date(listing.expiryDate).toLocaleString()}</p>
-                    <p><strong>Location:</strong> Secunderabad (Approximate location)</p>
-                </div>
-
-                {/* ✅ UPDATED: Main action button is now for inquiries and hidden from the owner. */}
-                {!isOwner && (
-                    <button onClick={handleInquiry} className={styles.claimButton}>
-                        I'm Interested!
-                    </button>
-                )}
-
-                {/* Owner-specific action buttons for editing and deleting */}
-                {isOwner && (
-                    <div className={styles.ownerActions}>
-                        <button onClick={() => alert("Edit feature coming soon!")} className={styles.editButton}>Edit Post</button>
-                        <button onClick={handleDelete} className={styles.deleteButton}>Delete Post</button>
-                    </div>
-                )}
-            </div>
+  return (
+    <div className={styles.pageContainer}>
+      {/* 1. Hero Image */}
+      <img src={listing.imageUrl} alt={listing.title} className={styles.heroImage} />
+      
+      {/* 2. Content */}
+      <div className={styles.content}>
+        
+        {/* Seller Info */}
+        <div className={styles.sellerInfo}>
+          <img 
+            src={listing.seller?.profilePic || 'https://via.placeholder.com/40'} 
+            alt={listing.seller.name}
+            className={styles.sellerAvatar}
+          />
+          <div>
+            <span className={styles.postedBy}>Posted by</span>
+            <span className={styles.sellerName}>{listing.seller.name}</span>
+          </div>
         </div>
-    );
+
+        {/* Title */}
+        <h1 className={styles.title}>{listing.title}</h1>
+
+        {/* Description */}
+        <p className={styles.description}>{listing.description}</p>
+
+        {/* Detail Tags */}
+        <div className={styles.detailList}>
+          <div className={styles.detailItem}>
+            <BiCategoryAlt />
+            <span className={styles.categoryTag}>{listing.category}</span>
+          </div>
+          <div className={styles.detailItem}>
+            <BiTime />
+            <span>Expires: {formatDateTime(listing.expiryDate)}</span>
+          </div>
+          <div className={styles.detailItem}>
+            <BiMap />
+            {/* We'll add a real map/address later */}
+            <span>123 Main St, Anytown</span>
+          </div>
+        </div>
+
+        {/* 3. Action Button */}
+        <div className={styles.actionButtonWrapper}>
+          {/* Only show button if user is a "Taker" AND is NOT the seller */}
+          {canClaim && !isSeller && (
+            <Button 
+              text="I'm Interested!" 
+              onClick={handleClaimClick}
+              isLoading={isClaiming}
+            />
+          )}
+          {/* Show a message if the user is the seller */}
+          {isSeller && (
+            <p className={styles.sellerMessage}>This is your listing.</p>
+          )}
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default ListingDetailPage;

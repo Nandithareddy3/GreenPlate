@@ -1,85 +1,74 @@
-.pageContainer {
-    max-width: 600px;
-    margin: 2rem auto;
-    padding: 0 1rem;
-}
-
-.centered {
-    text-align: center;
-    margin-top: 2rem;
+.profileContainer {
+  padding: 1rem;
 }
 
 .profileHeader {
-    text-align: center;
-    margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5rem;
+  background-color: var(--bg-light-grey);
+  border-radius: var(--border-radius);
 }
 
-.avatar {
-    width: 100px;
-    height: 100px;
-    background-color: #e0e0e0;
-    border-radius: 50%;
-    margin: 0 auto 1rem;
+.profileAvatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--bg-white);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 0.75rem;
 }
 
-.name {
-    margin: 0;
+.profileName {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin: 0;
 }
 
-.email {
-    color: #888;
+.profileRole {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-light);
+  text-transform: capitalize;
+  margin-bottom: 1.5rem;
 }
 
-.impactCard {
-    background: linear-gradient(135deg, #A8D8B9, #87c6a0);
-    color: white;
-    padding: 1.5rem;
-    border-radius: 12px;
-    text-align: center;
-    margin-bottom: 2rem;
+.logoutButton {
+  background-color: #EF4444; /* bg-red-500 */
+  color: white;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 0.875rem;
+  border: none;
+  border-radius: var(--border-radius);
+  padding: 0.6rem 1.25rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
 }
 
-.impactCard h2 {
-    margin-top: 0;
+.logoutButton:hover {
+  background-color: #DC2626; /* bg-red-600 */
 }
 
-.listingsSection h2 {
-    margin-bottom: 1rem;
+/* Sections */
+.section {
+  margin-top: 2rem;
 }
 
-.activitySection h2 {
-    margin-bottom: 1rem;
+.sectionTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #E5E7EB; /* border-gray-200 */
 }
 
-.claimItem {
-    background-color: #fff;
-    padding: 1rem;
-    border-radius: 8px;
-    margin-bottom: 0.5rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
-
-.status {
-    font-weight: bold;
-    padding: 0.2rem 0.5rem;
-    border-radius: 4px;
-    font-size: 0.9rem;
-}
-
-.pending {
-    background-color: #f7c5a8;
-    color: #a15c2a;
-}
-
-.confirmed {
-    background-color: #A8D8B9;
-    color: #3b7454;
-}
-
-.cancelled {
-    background-color: #f8d7da;
-    color: #721c24;
+.emptyMessage {
+  color: var(--text-light);
+  text-align: center;
+  padding: 2rem;
+  background-color: var(--bg-light-grey);
+  border-radius: var(--border-radius);
 }

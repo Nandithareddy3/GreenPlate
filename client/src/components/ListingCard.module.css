@@ -1,0 +1,86 @@
+.card {
+  width: 100%;
+  background-color: var(--bg-white);
+  border-radius: var(--border-radius);
+  border: 1px solid #E5E7EB; /* border-gray-200 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  overflow: hidden; /* Ensures image corners are rounded */
+  margin-bottom: 1rem; /* Space between cards */
+  cursor: pointer;
+  transition: box-shadow 0.2s;
+}
+
+.card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.cardImage {
+  width: 100%;
+  height: 180px; /* Fixed height for all card images */
+  object-fit: cover; /* Ensures image covers the area */
+  display: block;
+}
+
+.cardContent {
+  padding: 1rem; /* 16px */
+}
+
+.sellerInfo {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem; /* 12px */
+}
+
+.sellerAvatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 0.5rem; /* 8px */
+}
+
+.sellerName {
+  font-size: 0.875rem; /* 14px */
+  font-weight: 500;
+  color: var(--text-dark);
+}
+
+.cardTitle {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.25rem; /* 20px */
+  font-weight: 700;
+  margin: 0 0 0.75rem 0; /* Title has margin-bottom */
+}
+
+.cardDetails {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem; /* 12px */
+  margin-bottom: 0.75rem;
+}
+
+.categoryTag {
+  background-color: var(--bg-light-grey);
+  color: var(--text-light);
+  font-size: 0.75rem; /* 12px */
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 1rem; /* Pill shape */
+}
+
+.location {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.875rem;
+  color: var(--text-light);
+}
+
+.expiryInfo {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.875rem;
+  color: var(--primary-green);
+  font-weight: 500;
+}
