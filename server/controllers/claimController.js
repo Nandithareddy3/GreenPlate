@@ -31,7 +31,7 @@ const createClaim = async (req, res) => {
         message: message,
         link: `/profile`
     });
-
+req.io.to(listing.seller._id.toString()).emit('new_notification', message);
     res.status(201).json(claim);
 } catch (error) {
     console.error('Error creating claim:', error);

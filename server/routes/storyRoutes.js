@@ -4,7 +4,7 @@ const { createStory, getStories } = require('../controllers/storyController');
 const { protect } = require('../middleware/authMiddleware');
 const upload = require('../middleware/uploadMiddleware');
 
-router.post('/', protect, upload.single('storyImage'), createStory);
+router.post('/', protect, upload.single('image'), createStory);
 
 router.get('/', protect, getStories);
 

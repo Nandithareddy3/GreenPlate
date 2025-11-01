@@ -79,5 +79,12 @@
     grid-template-columns: repeat(2, 1fr);
   }
 }
-
-/* ... (keep the .logoutButton style) ... */
+.emptyMessage {
+  color: var(--text-light);
+  text-align: center;
+  padding: 2rem;
+  background-color: var(--bg-light-grey);
+  border-radius: var(--border-radius);
+  /* Make it span both columns in a grid */
+  grid-column: 1 / -1; 
+}

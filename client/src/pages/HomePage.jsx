@@ -1,23 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useAuth } from '../context/AuthContext.jsx';
 import StoryReel from '../components/StoryReel.jsx';
-import ListingCard from '../components/ListingCard.jsx'; // 1. Import ListingCard
-import { Link } from 'react-router-dom'; // 2. Import Link
+import ListingCard from '../components/ListingCard.jsx';
+import SearchBar from '../components/SearchBar.jsx'; // 1. Import
+import CategoryScroller from '../components/CategoryScroller.jsx'; // 1. Import
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import styles from './HomePage.module.css';
 
 const HomePage = () => {
-  const { user, logout } = useAuth();
-  const [listings, setListings] = useState([]); // 3. State for listings
+  const { logout } = useAuth();
+  const [allListings, setAllListings] = useState([]); // 2. Holds all listings
   const [loading, setLoading] = useState(true);
-
+const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('All');
   // 4. Fetch listings from the API
   useEffect(() => {
     const fetchListings = async () => {
       try {
         // This is a public route, no token needed
         const { data } = await axios.get('http://localhost:5000/api/listings');
-        setListings(data);
+        setAllListings(data);
       } catch (error) {
         console.error('Failed to fetch listings:', error);
       } finally {
@@ -26,7 +29,19 @@ const HomePage = () => {
     };
     fetchListings();
   }, []);
-
+const filteredListings = useMemo(() => {
+    return allListings
+      .filter((listing) => {
+        // Category filter
+        if (selectedCategory === 'All') return true;
+        return listing.category === selectedCategory;
+      })
+      .filter((listing) => {
+        // Search filter (checks title)
+        if (searchTerm === '') return true;
+        return listing.title.toLowerCase().includes(searchTerm.toLowerCase());
+      });
+  }, [allListings, selectedCategory, searchTerm]);
   return (
     <div className={styles.homeContainer}>
       <div className={styles.header}>
@@ -43,12 +58,16 @@ const HomePage = () => {
           <p>Loading listings...</p>
         ) : (
           <div className={styles.listingGrid}>
-            {listings.map((listing) => (
-              // 6. Wrap card in a Link to a detail page
-              <Link to={`/listing/${listing._id}`} key={listing._id} className={styles.cardLink}>
-                <ListingCard listing={listing} />
-              </Link>
-            ))}
+            {filteredListings.length > 0 ? (
+              filteredListings.map((listing) => (
+                <Link to={`/listing/${listing._id}`} key={listing._id} className={styles.cardLink}>
+                  <ListingCard listing={listing} />
+                </Link>
+              ))
+            ) : (
+              // 6. Show a message if no listings match
+              <p className={styles.emptyMessage}>No listings found. Try a different filter!</p>
+            )}
           </div>
         )}
       </div>

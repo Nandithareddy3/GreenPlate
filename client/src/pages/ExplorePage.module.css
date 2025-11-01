@@ -1,0 +1,45 @@
+.container {
+  /* No padding, map is edge-to-edge */
+}
+
+.mapContainer {
+  height: 300px;
+  width: 100%;
+}
+
+/* This class is targeted by react-leaflet */
+.map {
+  height: 100%;
+  width: 100%;
+  z-index: 1; /* Keep map below navbar */
+}
+
+.popupLink {
+  text-decoration: none;
+  color: var(--text-dark);
+}
+.popupLink strong {
+  color: var(--primary-green);
+  font-size: 1rem;
+}
+.popupLink p {
+  font-size: 0.9rem;
+  margin: 4px 0 0 0;
+}
+
+.gridContainer {
+  padding: 1rem;
+}
+
+.title {
+  font-size: 1.5rem; /* 24px */
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+/* 2-Column Grid */
+.listingGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Always 2 columns */
+  gap: 1rem; /* 16px */
+}

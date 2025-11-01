@@ -75,6 +75,9 @@ const createListing = async (req, res) => {
             }));
             await Notification.insertMany(notifications);
             // In a real-time app, you'd emit a socket event here
+            seller.followers.forEach(followerId => {
+        req.io.to(followerId.toString()).emit('new_notification', message);
+      });
         }
         // --- End Notification Logic ---
 

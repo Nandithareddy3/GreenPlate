@@ -1,0 +1,36 @@
+.scrollerContainer {
+  width: 100%;
+  overflow-x: auto;
+  white-space: nowrap;
+  padding: 0.75rem 0; /* 12px top/bottom */
+  display: flex;
+  gap: 0.5rem; /* 8px space */
+  border-bottom: 1px solid #E5E7EB; /* border-gray-200 */
+}
+
+/* Hides the scrollbar */
+.scrollerContainer::-webkit-scrollbar { display: none; }
+.scrollerContainer { -ms-overflow-style: none; scrollbar-width: none; }
+
+.categoryChip {
+  flex-shrink: 0;
+  padding: 0.5rem 1rem; /* 8px 16px */
+  font-size: 0.875rem; /* 14px */
+  font-weight: 500;
+  color: var(--text-dark);
+  background-color: var(--bg-light-grey);
+  border: 1px solid #E5E7EB;
+  border-radius: 2rem; /* Pill shape */
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.categoryChip:hover {
+  background-color: #E5E7EB; /* gray-200 */
+}
+
+.categoryChip.active {
+  background-color: var(--primary-green);
+  color: var(--bg-white);
+  border-color: var(--primary-green);
+}

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
-import axios from 'axios';
+import axios from 'axios'; // For the public GET request
 import Button from '../components/Button.jsx';
 import { BiMap, BiTime, BiCategoryAlt } from 'react-icons/bi';
 import styles from './ListingDetailPage.module.css';
@@ -21,7 +21,7 @@ const formatDateTime = (dateString) => {
 
 const ListingDetailPage = () => {
   const { id } = useParams(); // Get the listing ID from the URL
-  const { user, token } = useAuth(); // Get current user
+  const { user, token, toggleFollow, API } = useAuth(); // Get user, auth functions, and API instance
   const navigate = useNavigate();
 
   const [listing, setListing] = useState(null);
@@ -32,6 +32,7 @@ const ListingDetailPage = () => {
   useEffect(() => {
     const fetchListing = async () => {
       try {
+        // Use the global 'axios' here since this is a public route
         const { data } = await axios.get(`http://localhost:5000/api/listings/${id}`);
         setListing(data);
       } catch (err) {
@@ -52,14 +53,11 @@ const ListingDetailPage = () => {
     
     setIsClaiming(true);
     try {
-      // Call the "create claim" API we built
-      await axios.post(`http://localhost:5000/api/claims/${id}`, {}, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      // Use the context 'API' here since this is a protected route
+      await API.post(`/api/claims/${id}`);
       
-      // On success, show an alert and send user to their "claims" page
       alert('Your inquiry has been sent to the seller!');
-      navigate('/profile'); // We'll build this page to show "My Claims"
+      navigate('/profile'); // Send user to their "claims" page
       
     } catch (err) {
       alert('Failed to send inquiry. You may have already claimed this item.');
@@ -71,12 +69,14 @@ const ListingDetailPage = () => {
 
   if (loading) return <div className={styles.pageContainer}><p>Loading...</p></div>;
   if (error) return <div className={styles.pageContainer}><p>{error}</p></div>;
-  if (!listing) return null;
+  if (!listing) return null; // Don't render if no listing
 
-  // Check if the current user is the seller
-  const isSeller = user && user._id === listing.seller._id;
-  // Check if the user is a "Taker"
+  // Safe checks for seller and follow status
+  const isSeller = user && user._id === listing.seller?._id;
   const canClaim = user && user.role === 'Taker';
+  
+  // ⭐️ CORRECTED LINE: Safely checks if user.following exists, then calls .includes
+  const isFollowing = user?.following?.includes(listing.seller?._id);
 
   return (
     <div className={styles.pageContainer}>
@@ -90,13 +90,25 @@ const ListingDetailPage = () => {
         <div className={styles.sellerInfo}>
           <img 
             src={listing.seller?.profilePic || 'https://via.placeholder.com/40'} 
-            alt={listing.seller.name}
+            alt={listing.seller?.name || 'Seller'} // Safe check
             className={styles.sellerAvatar}
           />
-          <div>
+          <div className={styles.sellerDetails}>
             <span className={styles.postedBy}>Posted by</span>
-            <span className={styles.sellerName}>{listing.seller.name}</span>
+            <span className={styles.sellerName}>
+              {listing.seller?.name || 'Unknown Seller'} {/* Safe check */}
+            </span>
           </div>
+          
+          {/* Follow Button */}
+          {user && !isSeller && (
+            <button 
+              className={`${styles.followButton} ${isFollowing ? styles.following : ''}`}
+              onClick={() => toggleFollow(listing.seller._id)}
+            >
+              {isFollowing ? 'Following' : 'Follow'}
+            </button>
+          )}
         </div>
 
         {/* Title */}

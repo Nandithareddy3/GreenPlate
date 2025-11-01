@@ -7,20 +7,16 @@ import RegisterPage from './pages/RegisterPage.jsx';
 import HomePage from './pages/HomePage.jsx';
 import ListingDetailPage from './pages/ListingDetailPage.jsx';
 import ProfilePage from './pages/ProfilePage.jsx';
-
-// Simple placeholders for now
-const ExplorePage = () => <div><h1>Explore Page</h1></div>;
-const PostPage = () => <div><h1>Post Page</h1></div>;
-const NotificationsPage = () => <div><h1>Notifications Page</h1></div>;
+import PostPage from './pages/PostPage.jsx';
+import NotificationsPage from './pages/NotificationsPage.jsx';
+import ExplorePage from './pages/ExplorePage.jsx';
 
 function App() {
   return (
     <Routes>
-      {/* Routes WITHOUT the navbar */}
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
-
-      {/* Routes WITH the navbar (wrapped in MainLayout) */}
+    
       <Route element={<MainLayout />}>
         <Route path="/" element={<HomePage />} />
         <Route path="/listing/:id" element={<ListingDetailPage />} />

@@ -7,21 +7,22 @@ const app = express();
 const connectDB = require('./config/db');
 
 const PORT = process.env.PORT || 5000;
-const server = http.createServer(app); // Create HTTP server from Express app
+const server = http.createServer(app);
 connectDB();
 
-// Attach Socket.IO to the HTTP server
 const io = new Server(server, {
     cors: {
-        origin: "http://localhost:5173", // Make sure this matches your client port
+        origin: "http://localhost:5173",
         methods: ["GET", "POST"]
     }
 });
 
-// Socket.IO connection test
 io.on('connection', (socket) => {
     console.log('A user connected:', socket.id);
-
+    socket.on('join_room', (userId) => {
+      socket.join(userId);
+      console.log(`User ${socket.id} joined room ${userId}`);
+    });
     socket.on('disconnect', () => {
         console.log('User disconnected:', socket.id);
     });
@@ -29,28 +30,37 @@ io.on('connection', (socket) => {
 
 // --- Middleware ---
 
-// Make 'io' accessible to all routes
 app.use((req, res, next) => {
     req.io = io;
     next();
 });
 
-// Enable CORS for all Express routes
 app.use(cors());
 
-// Body parsers
+// --- ⭐️ CORRECTED API ROUTE & PARSER ORDER ⭐️ ---
+
+// 1. Define API root route
+app.get('/', (req, res) => res.send('Welcome to the GreenPlate API!'));
+
+// 2. Define routes that handle 'multipart/form-data' (file uploads).
+// These MUST come BEFORE the express.json() parser.
+app.use('/api/listings', require('./routes/listingRoutes'));
+app.use('/api/stories', require('./routes/storyRoutes'));
+
+// 3. Now, define the body parsers.
+// These will apply to all routes defined *after* this point.
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-// --- API Routes ---
-app.get('/', (req, res) => res.send('Welcome to the GreenPlate API!'));
+// 4. Define all other routes that *do* use JSON/URL-encoded bodies.
 app.use('/api/users', require('./routes/userRoutes'));
-app.use('/api/listings', require('./routes/listingRoutes'));
 app.use('/api/claims', require('./routes/claimRoutes'));
-app.use('/api/stories', require('./routes/storyRoutes'));
 app.use('/api/notifications', require('./routes/notificationRoutes'));
+
+// --- End of Fix ---
+
 // --- Start Server ---
-// Start the 'server' (with Socket.IO) NOT the 'app'
+// (The old app.use(...) lines have been removed from here)
 server.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });

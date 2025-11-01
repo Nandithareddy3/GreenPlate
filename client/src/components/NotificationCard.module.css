@@ -1,0 +1,63 @@
+.cardLink {
+  text-decoration: none;
+  color: inherit;
+}
+
+.card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background-color: var(--bg-white);
+  border-bottom: 1px solid #E5E7EB; /* border-gray-200 */
+  padding: 1rem;
+  position: relative;
+  transition: background-color 0.2s;
+}
+
+.card:hover {
+  background-color: #F9FAFB; /* bg-gray-50 */
+}
+
+/* Style for notifications that have been read */
+.card.read {
+  opacity: 0.7;
+}
+.card.read .message {
+  font-weight: 400;
+}
+
+.iconWrapper {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--bg-light-grey);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary-green);
+}
+
+.content {
+  flex-grow: 1;
+}
+
+.message {
+  font-size: 0.9rem;
+  font-weight: 600; /* Unread messages are bold */
+  color: var(--text-dark);
+  margin: 0 0 4px 0;
+}
+
+.time {
+  font-size: 0.75rem; /* 12px */
+  color: var(--text-light);
+}
+
+.unreadDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: var(--primary-green);
+  flex-shrink: 0;
+}
