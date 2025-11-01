@@ -122,42 +122,56 @@
 /* --- ⭐️ NEW STYLES FOR FOLLOW BUTTON ⭐️ --- */
 .followButton {
   flex-shrink: 0;
-  padding: 0.5rem 1rem; /* 8px 16px */
-  font-size: 0.875rem; /* 14px */
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
   font-weight: 600;
   font-family: 'Poppins', sans-serif;
   border-radius: var(--border-radius);
   cursor: pointer;
   transition: all 0.2s;
+  /* This lets us use CSS to set the text */
+  position: relative; 
 }
 
-/* "Follow" state */
+/* "Follow" state (Default) */
 .followButton {
   background-color: var(--primary-green);
   color: var(--bg-white);
   border: 1px solid var(--primary-green);
 }
+.followButton::before {
+  content: 'Follow'; /* The text is now set by CSS */
+}
 
-/* "Following" state */
+/* "Following" state (Static) */
 .followButton.following {
   background-color: var(--bg-light-grey);
   color: var(--text-dark);
-  border: 1px solid #D1D5DB; /* border-gray-300 */
-}
-
-.followButton.following:hover {
-  background-color: #fef2f2; /* bg-red-100 */
-  border-color: #f87171; /* border-red-400 */
-  color: #b91c1c; /* text-red-700 */
-}
-
-/* On hover, the "Following" button can turn into "Unfollow" */
-.followButton.following:hover::after {
-  content: 'Unfollow';
-}
-.followButton.following:hover::before {
-  content: '';
+  border: 1px solid #D1D5DB;
 }
 .followButton.following::before {
-  content: 'Following';
+  content: 'Following'; /* The text "Following" */
+}
+
+/* "Following" state (On Hover) */
+.followButton.following:hover {
+  background-color: #fef2f2; /* red-100 */
+  border-color: #f87171; /* red-400 */
+}
+.followButton.following:hover::before {
+  content: 'Unfollow'; /* The text "Unfollow" */
+  color: #b91c1c; /* red-800 */
+}
+.actionButtonWrapper {
+  margin-top: 2rem;
+  padding-bottom: 1rem; /* Add some space at the bottom */
+}
+
+.sellerMessage {
+  text-align: center;
+  font-weight: 500;
+  color: var(--text-light);
+  padding: 1rem;
+  background-color: var(--bg-light-grey);
+  border-radius: var(--border-radius);
 }

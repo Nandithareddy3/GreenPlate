@@ -94,10 +94,10 @@ const createListing = async (req, res) => {
 // @access  Public
 const getListingById = async (req, res) => {
     try {
-        const listing = await Listing.findById(req.params.id).populate(
-            'seller',
-            'name email' // Populate seller details
-        );
+       const listing = await Listing.findById(req.params.id).populate(
+        'seller',
+        'name email profilePic _id' // Add _id and profilePic
+    );
         if (!listing) {
             return res.status(404).json({ message: 'Listing not found' });
         }

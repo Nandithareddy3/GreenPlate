@@ -72,3 +72,47 @@
   background-color: var(--bg-light-grey);
   border-radius: var(--border-radius);
 }
+.listingGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+}
+@media (min-width: 640px) {
+  .listingGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Follow Button Styles */
+.followButton {
+  flex-shrink: 0;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+  margin-top: 1rem;
+}
+.followButton {
+  background-color: var(--primary-green);
+  color: var(--bg-white);
+  border: 1px solid var(--primary-green);
+}
+.followButton::before { content: 'Follow'; }
+.followButton.following {
+  background-color: var(--bg-light-grey);
+  color: var(--text-dark);
+  border: 1px solid #D1D5DB;
+}
+.followButton.following::before { content: 'Following'; }
+.followButton.following:hover {
+  background-color: #fef2f2;
+  border-color: #f87171;
+}
+.followButton.following:hover::before {
+  content: 'Unfollow';
+  color: #b91c1c;
+}

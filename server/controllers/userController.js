@@ -79,11 +79,23 @@ const getUserProfile = async (req, res) => {
 
     if (user) {
         let userActivity = {};
+        
         if (user.role === 'Seller') {
+            // --- ⭐️ START OF FIX ⭐️ ---
+            // A seller needs to see BOTH their listings AND their received claims
             const listings = await Listing.find({ seller: user._id }).sort({ createdAt: -1 });
-            userActivity = { listings };
+            const claims = await Claim.find({ seller: user._id })
+                                      .populate('listing', 'title imageUrl')
+                                      .populate('taker', 'name')
+                                      .sort({ createdAt: -1 });
+            userActivity = { listings, claims };
+            // --- ⭐️ END OF FIX ⭐️ ---
+            
         } else {
-            const claims = await Claim.find({ taker: user._id }).populate('listing').sort({ createdAt: -1 });
+            // A Taker only needs to see the claims they have made
+            const claims = await Claim.find({ taker: user._id })
+                                      .populate('listing')
+                                      .sort({ createdAt: -1 });
             userActivity = { claims };
         }
 
@@ -92,8 +104,8 @@ const getUserProfile = async (req, res) => {
             name: user.name,
             email: user.email,
             role: user.role,
-            following: user.following, // <-- ⭐️ ADD THIS LINE
-            followers: user.followers, // <-- ⭐️ ADD THIS LINE
+            following: user.following,
+            followers: user.followers,
             ...userActivity,
         });
     } else {
@@ -136,9 +148,33 @@ const followUser = async (req, res) => {
     }
 };
 
+const getPublicUserProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id).select('-password');
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Find all *available* listings posted by this user
+    const listings = await Listing.find({ 
+      seller: user._id, 
+      status: 'Available' 
+    }).sort({ createdAt: -1 });
+    
+    // Send back the user's public info AND their listings
+    res.json({ user, listings });
+
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ message: 'Server Error' });
+  }
+};
+
+// Now, add the new function to your exports
 module.exports = {
-    registerUser,
-    loginUser,
-    getUserProfile,
-    followUser,
+  registerUser,
+  loginUser,
+  getUserProfile,
+  followUser,
+  getPublicUserProfile // <-- ⭐️ ADD THIS
 };

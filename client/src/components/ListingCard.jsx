@@ -1,6 +1,7 @@
 import React from 'react';
 import { BiMap, BiTime } from 'react-icons/bi';
 import styles from './ListingCard.module.css';
+import { Link } from 'react-router-dom';
 
 // We'll use this helper to format dates
 const formatExpiry = (dateString) => {
@@ -33,6 +34,11 @@ const ListingCard = ({ listing }) => {
             alt={listing.seller?.name || 'Seller'}
             className={styles.sellerAvatar}
           />
+          <Link to={`/profile/${listing.seller._id}`} className={styles.sellerLink}>
+            <span className={styles.sellerName}>
+              {listing.seller?.name || 'Seller'}
+            </span>
+          </Link>
           <span className={styles.sellerName}>
             {listing.seller?.name || 'Seller'}
           </span>
