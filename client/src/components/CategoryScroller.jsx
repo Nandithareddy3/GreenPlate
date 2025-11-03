@@ -1,7 +1,6 @@
 import React from 'react';
 import styles from './CategoryScroller.module.css';
 
-// These categories must match your backend 'listingModel.js' enum
 const categories = [
   'All',
   'Bakery & Breads',
