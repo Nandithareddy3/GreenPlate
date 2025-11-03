@@ -6,20 +6,17 @@ import toast from 'react-hot-toast';
 
 const AuthContext = createContext();
 
-// Connect to the socket server
 const socket = io('http://localhost:5000'); 
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(localStorage.getItem('token'));
-  
-  // --- ⭐️ FIX 1: Rename state variable ---
+
   const [authLoading, setAuthLoading] = useState(true); 
   
   const navigate = useNavigate();
 
-  const API = axios.create({ baseURL: 'http://localhost:5000' });
-
+  const API = axios.create({ baseURL: '/' });
   API.interceptors.request.use((config) => {
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
@@ -27,7 +24,7 @@ export const AuthProvider = ({ children }) => {
     return config;
   });
 
-  // --- Auth Functions ---
+
 
   const logout = () => {
     setToken(null);
@@ -37,7 +34,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const login = async (email, password) => {
-    // ... (login function is unchanged)
+
     try {
       const { data } = await API.post('/api/users/login', { email, password });
       setToken(data.token);
@@ -84,9 +81,6 @@ export const AuthProvider = ({ children }) => {
       alert('Could not update follow status.');
     }
   };
-
-  // --- useEffect Hooks ---
-
   useEffect(() => {
     const getProfile = async () => {
       if (token) {
@@ -98,13 +92,13 @@ export const AuthProvider = ({ children }) => {
           logout();
         }
       }
-      setAuthLoading(false); // <-- Use the renamed function
+      setAuthLoading(false); 
     };
     getProfile();
   }, [token]);
 
   useEffect(() => {
-    // ... (socket.io logic is unchanged) ...
+
     if (user) {
       socket.emit('join_room', user._id);
       socket.on('new_notification', (message) => {
@@ -116,7 +110,6 @@ export const AuthProvider = ({ children }) => {
     }
   }, [user]);
 
-  // --- ⭐️ FIX 2: Update the 'value' prop ⭐️ ---
   return (
     <AuthContext.Provider 
       value={{ 
@@ -125,12 +118,12 @@ export const AuthProvider = ({ children }) => {
         login, 
         register, 
         logout, 
-        loading: authLoading, // <-- Pass authLoading as 'loading'
+        loading: authLoading, 
         API,
         toggleFollow
       }}
     >
-      {!authLoading && children} {/* <-- Check authLoading here */}
+      {!authLoading && children} 
     </AuthContext.Provider>
   );
 };
