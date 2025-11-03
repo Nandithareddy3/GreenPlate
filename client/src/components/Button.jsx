@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './Button.module.css'; // Import the CSS module
+import styles from './Button.module.css'; 
 
 const Button = ({ text, type = 'submit', onClick, isLoading = false }) => {
   const buttonClass = `${styles.button} ${isLoading ? styles.loading : ''}`;
