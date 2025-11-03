@@ -1,0 +1,48 @@
+.cardLink {
+  text-decoration: none;
+  color: inherit;
+}
+
+.card {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem; /* 12px */
+  padding: 1rem;
+  border-bottom: 1px solid #E5E7EB; /* border-gray-200 */
+  transition: background-color 0.2s;
+}
+
+.card:hover {
+  background-color: #F9FAFB; /* bg-gray-50 */
+}
+
+.avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.content {
+  flex-grow: 1;
+  /* For text truncation */
+  min-width: 0;
+}
+
+.name {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.messagePreview {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  margin: 2px 0 0 0;
+  /* Truncate long messages with '...' */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

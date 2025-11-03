@@ -1,0 +1,129 @@
+.chatContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* Full viewport height */
+  background-color: var(--bg-light-grey);
+}
+
+.loadingContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  font-size: 1.2rem;
+  color: var(--text-light);
+}
+
+/* --- Header --- */
+.chatHeader {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background-color: var(--bg-white);
+  border-bottom: 1px solid #E5E7EB;
+  flex-shrink: 0;
+  z-index: 10;
+  position: sticky; 
+  top: 0;
+  background-color: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.backButton {
+  color: var(--text-dark);
+  margin-right: 0.75rem;
+  padding: 0.5rem;
+  border-radius: 50%;
+}
+.backButton:hover {
+  background-color: var(--bg-light-grey);
+}
+
+.headerTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* --- Message List --- */
+.messageList {
+  flex-grow: 1; /* Takes up all available space */
+  overflow-y: auto; /* Enables vertical scrolling */
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem; /* 12px space between bubbles */
+}
+
+.messageRow {
+  display: flex;
+  width: 100%;
+}
+
+.messageBubble {
+  max-width: 75%;
+  padding: 0.75rem 1rem;
+  border-radius: 1.25rem; /* 20px */
+  font-size: 0.95rem;
+  line-height: 1.4;
+  word-wrap: break-word;
+}
+
+/* "Their" message (left side) */
+.theirMessageRow {
+  justify-content: flex-start;
+}
+.theirMessageRow .messageBubble {
+  background-color: var(--bg-white);
+  color: var(--text-dark);
+  border: 1px solid #E5E7EB;
+  border-bottom-left-radius: 4px;
+}
+
+/* "My" message (right side) */
+.myMessageRow {
+  justify-content: flex-end;
+}
+.myMessageRow .messageBubble {
+  background-color: var(--primary-green);
+  color: var(--bg-white);
+  border-bottom-right-radius: 4px;
+}
+
+/* --- Message Input Form --- */
+.messageForm {
+  display: flex;
+  padding: 0.75rem;
+  background-color: var(--bg-white);
+  border-top: 1px solid #E5E7EB;
+  flex-shrink: 0;
+}
+
+.messageInput {
+  flex-grow: 1;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border: 1px solid #D1D5DB;
+  border-radius: 2rem; /* Pill shape */
+  background-color: var(--bg-light-grey);
+  box-sizing: border-box;
+}
+.messageInput:focus {
+  outline: none;
+  border-color: var(--primary-green);
+  box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.3);
+}
+
+.sendButton {
+  background: none;
+  border: none;
+  color: var(--primary-green);
+  padding: 0.75rem;
+  margin-left: 0.5rem;
+  cursor: pointer;
+  border-radius: 50%;
+}
+.sendButton:hover {
+  background-color: var(--bg-light-grey);
+}

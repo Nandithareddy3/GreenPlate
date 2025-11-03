@@ -6,27 +6,33 @@ const Notification = require('../models/notificationModel');
 // @route   GET /api/listings
 // @access  Public
 const getListings = async (req, res) => {
-    try {
-        const keyword = req.query.keyword
-            ? {
-                title: {
-                    $regex: req.query.keyword,
-                    $options: 'i', // Case-insensitive
-                },
-              }
-            : {};
+  try {
+    // 1. Start with a base filter for 'Available' items
+    let queryFilter = { status: 'Available' };
 
-        // Find listings that are 'Available' and match the keyword
-        const listings = await Listing.find({ ...keyword, status: 'Available' }).populate(
-            'seller',
-            'name email'
-        ).sort({ createdAt: -1 }); // Sort newest first
-
-        res.status(200).json(listings);
-    } catch (error) {
-        console.error("Error fetching listings:", error);
-        res.status(500).json({ message: 'Server Error' });
+    // 2. Add keyword search (if provided)
+    if (req.query.keyword) {
+      queryFilter.title = {
+        $regex: req.query.keyword,
+        $options: 'i', // Case-insensitive
+      };
     }
+
+    // 3. Add category filter (if provided and not 'All')
+    if (req.query.category && req.query.category !== 'All') {
+      queryFilter.category = req.query.category;
+    }
+    
+    // 4. Find all listings that match the combined filter
+    const listings = await Listing.find(queryFilter)
+      .populate('seller', 'name profilePic')
+      .sort({ createdAt: -1 }); // Sort newest first
+
+    res.status(200).json(listings);
+  } catch (error) {
+    console.error("Error fetching listings:", error);
+    res.status(500).json({ message: 'Server Error' });
+  }
 };
 
 // @desc    Create a new listing
@@ -163,11 +169,49 @@ const updateListing = async (req, res) => {
   }
 };
 
-// ... (In your module.exports, add the new function name)
+// @desc    Get listings near a specific location
+// @route   GET /api/listings/nearme
+// @access  Public
+const getListingsNearMe = async (req, res) => {
+  const { latitude, longitude } = req.query;
+
+  if (!latitude || !longitude) {
+    return res.status(400).json({ message: 'Latitude and longitude are required' });
+  }
+
+  const userLat = parseFloat(latitude);
+  const userLon = parseFloat(longitude);
+
+  try {
+    const listings = await Listing.find({
+      status: 'Available',
+      location: {
+        $near: {
+          // 1. $geometry is the standard for GeoJSON
+          $geometry: {
+            type: 'Point',
+            coordinates: [userLon, userLat] // MongoDB uses [longitude, latitude]
+          },
+          // 2. $maxDistance: 10000 = 10 kilometers
+          // Find listings within a 10km radius
+          $maxDistance: 10000 
+        }
+      }
+    }).populate('seller', 'name profilePic');
+
+    res.json(listings);
+  } catch (error) {
+    console.error("Error fetching listings near location:", error);
+    res.status(500).json({ message: 'Server Error' });
+  }
+};
+
+// Now, add the new function to your exports
 module.exports = {
   getListings,
   createListing,
   getListingById,
   deleteListing,
-  updateListing, 
+  updateListing,
+  getListingsNearMe 
 };

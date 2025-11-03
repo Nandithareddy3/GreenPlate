@@ -43,3 +43,58 @@
   grid-template-columns: repeat(2, 1fr); /* Always 2 columns */
   gap: 1rem; /* 16px */
 }
+/* ... (keep all your old styles: .container, .map, etc.) ... */
+
+.gridContainer {
+  padding: 1rem;
+}
+
+/* ⭐️ NEW: Header with button */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.title {
+  font-size: 1.5rem; /* 24px */
+  font-weight: 700;
+  margin: 0;
+}
+
+.nearMeButton {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--primary-green);
+  color: var(--primary-green);
+  background-color: var(--bg-white);
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.nearMeButton:hover {
+  background-color: var(--primary-green);
+  color: var(--bg-white);
+}
+
+.listingGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+/* ⭐️ NEW: Empty message style */
+.emptyMessage {
+  color: var(--text-light);
+  text-align: center;
+  padding: 2rem;
+  background-color: var(--bg-light-grey);
+  border-radius: var(--border-radius);
+  /* Make it span both columns */
+  grid-column: 1 / -1; 
+}

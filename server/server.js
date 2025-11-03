@@ -54,9 +54,10 @@ app.use(express.urlencoded({ extended: false }));
 
 // 4. Define all other routes that *do* use JSON/URL-encoded bodies.
 app.use('/api/users', require('./routes/userRoutes'));
-app.use('/api/claims', require('./routes/claimRoutes'));
+//app.use('/api/claims', require('./routes/claimRoutes'));
 app.use('/api/notifications', require('./routes/notificationRoutes'));
-
+app.use('/api/chat', require('./routes/chatRoutes.js'));
+app.use('/api/claims', require('./routes/claimRoutes'));
 // --- End of Fix ---
 
 // --- Start Server ---

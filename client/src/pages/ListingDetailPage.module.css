@@ -175,3 +175,29 @@
   background-color: var(--bg-light-grey);
   border-radius: var(--border-radius);
 }
+/* ... (all your old styles) ... */
+
+.actionButtonWrapper {
+  margin-top: 2rem;
+  padding-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem; /* Space between the two buttons */
+}
+
+.secondaryButton {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: var(--bg-light-grey);
+  color: var(--text-dark);
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  border: 1px solid #D1D5DB; /* border-gray-300 */
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.secondaryButton:hover {
+  background-color: #E5E7EB; /* gray-200 */
+}

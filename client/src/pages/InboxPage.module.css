@@ -1,0 +1,24 @@
+.container {
+  /* No padding, list is edge-to-edge */
+}
+
+.title {
+  font-size: 1.875rem; /* 30px */
+  font-weight: 700;
+  padding: 1rem;
+  border-bottom: 1px solid #E5E7EB;
+  margin: 0; /* Remove default h1 margin */
+}
+
+.feed {
+  /* This is the list of chats */
+}
+
+.emptyMessage {
+  color: var(--text-light);
+  text-align: center;
+  padding: 2rem;
+  background-color: var(--bg-light-grey);
+  margin: 1rem;
+  border-radius: var(--border-radius);
+}

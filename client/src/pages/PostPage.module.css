@@ -70,3 +70,12 @@
   font-weight: 700;
   color: var(--text-dark);
 }
+.note {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  text-align: center;
+  background-color: var(--bg-light-grey);
+  padding: 0.75rem;
+  border-radius: var(--border-radius);
+  margin-bottom: 1rem;
+}

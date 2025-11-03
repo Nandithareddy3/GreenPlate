@@ -1,47 +1,48 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext.jsx';
 import StoryReel from '../components/StoryReel.jsx';
 import ListingCard from '../components/ListingCard.jsx';
-import SearchBar from '../components/SearchBar.jsx'; // 1. Import
-import CategoryScroller from '../components/CategoryScroller.jsx'; // 1. Import
+import SearchBar from '../components/SearchBar.jsx';
+import CategoryScroller from '../components/CategoryScroller.jsx';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import styles from './HomePage.module.css';
 
 const HomePage = () => {
   const { logout } = useAuth();
-  const [allListings, setAllListings] = useState([]); // 2. Holds all listings
+  const [listings, setListings] = useState([]); // 1. Only one list needed now
   const [loading, setLoading] = useState(true);
-const [searchTerm, setSearchTerm] = useState('');
+
+  // 2. State for filters
+  const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
-  // 4. Fetch listings from the API
+
+  // 3. This useEffect will now re-run whenever the filters change
   useEffect(() => {
     const fetchListings = async () => {
+      setLoading(true);
       try {
-        // This is a public route, no token needed
-        const { data } = await axios.get('http://localhost:5000/api/listings');
-        setAllListings(data);
+        // 4. Pass filters to the API as query params
+        const { data } = await axios.get('http://localhost:5000/api/listings', {
+          params: {
+            keyword: searchTerm,
+            category: selectedCategory,
+          }
+        });
+        setListings(data); // Set the filtered list from the backend
       } catch (error) {
         console.error('Failed to fetch listings:', error);
       } finally {
         setLoading(false);
       }
     };
+    
     fetchListings();
-  }, []);
-const filteredListings = useMemo(() => {
-    return allListings
-      .filter((listing) => {
-        // Category filter
-        if (selectedCategory === 'All') return true;
-        return listing.category === selectedCategory;
-      })
-      .filter((listing) => {
-        // Search filter (checks title)
-        if (searchTerm === '') return true;
-        return listing.title.toLowerCase().includes(searchTerm.toLowerCase());
-      });
-  }, [allListings, selectedCategory, searchTerm]);
+  }, [searchTerm, selectedCategory]); // 5. Re-fetch on any filter change
+
+  // 6. We no longer need the 'useMemo' filtering!
+  // The 'listings' state is now always the correct filtered list.
+
   return (
     <div className={styles.homeContainer}>
       <div className={styles.header}>
@@ -49,23 +50,28 @@ const filteredListings = useMemo(() => {
       </div>
 
       <StoryReel />
+      
+      {/* These components now just update the state, triggering the useEffect */}
+      <CategoryScroller 
+        selectedCategory={selectedCategory}
+        onSelectCategory={setSelectedCategory}
+      />
+      <SearchBar onSearch={setSearchTerm} />
 
       <div className={styles.feedContainer}>
         <h2 className={styles.title}>Feed</h2>
         
-        {/* 5. Render the feed */}
         {loading ? (
           <p>Loading listings...</p>
         ) : (
           <div className={styles.listingGrid}>
-            {filteredListings.length > 0 ? (
-              filteredListings.map((listing) => (
+            {listings.length > 0 ? (
+              listings.map((listing) => (
                 <Link to={`/listing/${listing._id}`} key={listing._id} className={styles.cardLink}>
                   <ListingCard listing={listing} />
                 </Link>
               ))
             ) : (
-              // 6. Show a message if no listings match
               <p className={styles.emptyMessage}>No listings found. Try a different filter!</p>
             )}
           </div>
@@ -78,4 +84,5 @@ const filteredListings = useMemo(() => {
     </div>
   );
 };
+
 export default HomePage;

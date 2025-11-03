@@ -39,9 +39,6 @@ const ListingCard = ({ listing }) => {
               {listing.seller?.name || 'Seller'}
             </span>
           </Link>
-          <span className={styles.sellerName}>
-            {listing.seller?.name || 'Seller'}
-          </span>
         </div>
         
         {/* Listing Title */}

@@ -1,6 +1,4 @@
-.profileContainer {
-  padding: 1rem;
-}
+
 
 .profileHeader {
   display: flex;
@@ -8,7 +6,8 @@
   align-items: center;
   padding: 1.5rem;
   background-color: var(--bg-light-grey);
-  border-radius: var(--border-radius);
+  border-radius: 0;
+  border-bottom: 1px solid #E5E7EB;
 }
 
 .profileAvatar {
@@ -55,6 +54,7 @@
 /* Sections */
 .section {
   margin-top: 2rem;
+  padding: 0 1rem;
 }
 
 .sectionTitle {
@@ -115,4 +115,33 @@
 .followButton.following:hover::before {
   content: 'Unfollow';
   color: #b91c1c;
+}
+.buttonGroup {
+  display: flex; /* Makes buttons sit side-by-side */
+  gap: 0.75rem; /* Space between buttons */
+  width: 100%;
+  margin-bottom: 0.75rem; /* Space before logout button */
+}
+
+/* --- ⭐️ 2. RENAME .editProfileButton to .profileButton ⭐️ --- */
+.profileButton {
+  /* This style will apply to BOTH "Add Story" and "Edit Profile" */
+  flex: 1; /* Makes both buttons share the space equally */
+  display: inline-block;
+  box-sizing: border-box;
+  padding: 0.6rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  color: var(--text-dark);
+  background-color: var(--bg-white);
+  border: 1px solid #D1D5DB; /* border-gray-300 */
+  border-radius: var(--border-radius);
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.profileButton:hover {
+  background-color: var(--bg-light-grey);
 }

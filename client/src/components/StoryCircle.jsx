@@ -6,8 +6,8 @@ const StoryCircle = ({ story, onClick }) => {
     <div className={styles.storyWrapper} onClick={onClick}>
       <div className={styles.storyRing}>
         <img
-          // Use a placeholder if the story has no image or user has no pic
-          src={story.imageUrl || 'https://via.placeholder.com/64'}
+          // ⭐️ FIX: Use the user's profile pic for the circle
+          src={story.user.profilePic || 'https://via.placeholder.com/64'}
           alt={story.user.name}
           className={styles.storyImage}
         />

@@ -28,9 +28,13 @@ body {
   padding: 0;
   font-family: 'Roboto', sans-serif;
   font-size: 16px;
-  color: var(--text-dark);
+ color: #333; /* Use a dark gray, not pure black */
   background-color: var(--bg-white);
   overscroll-behavior: none;
+  
+  /* This makes fonts look smoother */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -41,4 +45,27 @@ h1, h2, h3, h4, h5, h6 {
 /* A helper class for padding below the fixed navbar */
 .main-content-padding {
   padding-bottom: 76px; /* 60px navbar + 16px space */
+}
+.card-shadow {
+  border: 1px solid #E5E7EB; /* border-gray-200 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+/* A "lift" effect on hover for cards */
+.card-shadow:hover {
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+/* A standard shadow for buttons */
+.button-shadow {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+/* A "press" effect on click for buttons */
+.button-shadow:active {
+  transform: scale(0.98);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }

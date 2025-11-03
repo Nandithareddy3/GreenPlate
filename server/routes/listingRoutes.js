@@ -5,10 +5,13 @@ const { createListing,
     getListingById,
     deleteListing,
     updateListing,
+    getListingsNearMe,
 } = require('../controllers/listingController');
 const { protect } = require('../middleware/authMiddleware');
 const upload = require('../middleware/uploadMiddleware');
+
 router.get('/', getListings);
+router.get('/nearme', getListingsNearMe);
 router.get('/:id', getListingById);
 router.delete('/:id', protect, deleteListing);
 router.post('/', protect, upload.single('image'), createListing);

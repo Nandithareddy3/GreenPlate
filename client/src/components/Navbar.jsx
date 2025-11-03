@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-// 1. We've replaced BiPlusSquare with BiPlus
-import { BiHomeAlt2, BiSearch, BiPlus, BiBell, BiUser } from 'react-icons/bi';
+// 1. Make sure you import BiMessageRounded and remove BiBell
+import { BiHomeAlt2, BiSearch, BiPlus, BiUser, BiMessageRounded } from 'react-icons/bi';
 import styles from './Navbar.module.css';
 
 const Navbar = () => {
@@ -21,12 +21,12 @@ const Navbar = () => {
       </NavLink>
 
       <NavLink to="/post" className={getNavLinkClass}>
-        {/* 2. We're using the new icon here */}
-        <BiPlus size={28} /> {/* Made it slightly larger */}
+        <BiPlus size={28} />
       </NavLink>
 
-      <NavLink to="/notifications" className={getNavLinkClass}>
-        <BiBell size={24} />
+      {/* 2. Make sure this NavLink goes to '/inbox' and uses BiMessageRounded */}
+      <NavLink to="/inbox" className={getNavLinkClass}>
+        <BiMessageRounded size={24} />
       </NavLink>
 
       <NavLink to="/profile" className={getNavLinkClass}>
